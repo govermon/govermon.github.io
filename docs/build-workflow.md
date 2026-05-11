@@ -63,7 +63,7 @@ Current authentication model:
 
 - the live deployment currently uses one GitHub App named `govermon-pages-publisher`
 - that app is installed on `govermon/govermon.github.io` and on the source repo that stores its private key
-- the current `amsler-tracker` direct-push workflow uses `GOVERMON_SITE_PUSH_APP_ID=367364`
+- the current `amsler-tracker` direct-push workflow uses `GOVERMON_SITE_PUSH_APP_ID=3679364`
 - the app private key is stored in `GOVERMON_SITE_PUSH_APP_PRIVATE_KEY`
 
 If you later decide to split trust boundaries more strictly, you can move to one
@@ -85,7 +85,7 @@ Source-repo configuration for the current direct-push workflow:
 
 - variable `GOVERMON_SITE_SYNC_ENABLED=true`
 - variable `GOVERMON_SITE_REPO=govermon/govermon.github.io`
-- variable `GOVERMON_SITE_PUSH_APP_ID=367364`
+- variable `GOVERMON_SITE_PUSH_APP_ID=3679364`
 - secret `GOVERMON_SITE_PUSH_APP_PRIVATE_KEY`
 
 Temporary migration fallback:

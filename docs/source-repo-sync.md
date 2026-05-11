@@ -27,7 +27,7 @@ For `amsler-tracker`, the source repo configuration is:
 
 - `GOVERMON_SITE_SYNC_ENABLED=true`
 - `GOVERMON_SITE_REPO=govermon/govermon.github.io`
-- `GOVERMON_SITE_PUSH_APP_ID=367364`
+- `GOVERMON_SITE_PUSH_APP_ID=3679364`
 - `GOVERMON_SITE_PUSH_APP_PRIVATE_KEY` stored as a repo secret
 
 That same app can support either contract if it has the needed repository

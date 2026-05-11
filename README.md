@@ -65,7 +65,7 @@ For the current Amsler Tracker design, the private repo uses that app for the
 direct-push contract through its own GitHub Actions workflow with:
 - repository variable `GOVERMON_SITE_SYNC_ENABLED=true`
 - repository variable `GOVERMON_SITE_REPO=govermon/govermon.github.io`
-- repository variable `GOVERMON_SITE_PUSH_APP_ID=367364`
+- repository variable `GOVERMON_SITE_PUSH_APP_ID=3679364`
 - repository secret `GOVERMON_SITE_PUSH_APP_PRIVATE_KEY`
 
 Preferred auth for that direct-push contract is a dedicated GitHub App
