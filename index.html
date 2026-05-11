@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>govermon</title>
+    <meta name="description" content="Public homepage and project catalog for govermon.">
+    <link rel="stylesheet" href="site.css">
+  </head>
+  <body>
+    <main class="shell">
+      <section class="hero panel">
+        <p class="eyebrow">govermon</p>
+        <h1>Public project pages for work that does not all live in public.</h1>
+        <p class="lede">
+          This site is the public front door for govermon. It can hold a short bio,
+          project summaries, and public-safe status pages even when the source
+          repositories themselves stay private.
+        </p>
+        <div class="actions">
+          <a class="button button-primary" href="https://github.com/govermon">GitHub profile</a>
+          <a class="button button-secondary" href="mailto:replace-me@example.com">Contact placeholder</a>
+        </div>
+      </section>
+
+      <section class="about grid">
+        <article class="panel">
+          <p class="label">Bio placeholder</p>
+          <p>
+            Replace this with a short first-person or third-person biography. A good
+            starting shape is who you are, what kinds of systems you build, and what
+            visitors should look at first.
+          </p>
+        </article>
+        <article class="panel">
+          <p class="label">How this site works</p>
+          <p>
+            Each project card below is backed by a static project bundle under
+            <strong>projects/&lt;slug&gt;/</strong>. Private repositories can sync those
+            bundles here by direct push without exposing their whole source trees.
+          </p>
+        </article>
+      </section>
+
+      <section class="catalog-header">
+        <div>
+          <p class="eyebrow">Projects</p>
+          <h2>Current public project pages</h2>
+        </div>
+      </section>
+
+      <section class="catalog" id="project-catalog">
+        <article class="panel card placeholder-card">
+          <p class="label">Loading</p>
+          <p>Project metadata is loading.</p>
+        </article>
+      </section>
+    </main>
+
+    <script>
+      async function loadProjects() {
+        const container = document.getElementById('project-catalog');
+        try {
+          const response = await fetch('projects/projects.json', { cache: 'no-store' });
+          if (!response.ok) {
+            throw new Error('catalog fetch failed');
+          }
+
+          const payload = await response.json();
+          const projects = Array.isArray(payload.projects) ? payload.projects : [];
+          if (projects.length === 0) {
+            container.innerHTML = '<article class="panel card placeholder-card"><p class="label">No projects yet</p><p>Add a project bundle under projects/&lt;slug&gt;/ and rebuild the catalog.</p></article>';
+            return;
+          }
+
+          container.innerHTML = projects.map((project) => {
+            const tags = Array.isArray(project.tags) && project.tags.length > 0
+              ? `<p class="tags">${project.tags.join(' · ')}</p>`
+              : '';
+            const note = Array.isArray(project.notes) && project.notes.length > 0
+              ? `<p class="note">${project.notes[0]}</p>`
+              : '';
+            const status = project.status ? `<p class="label">${project.status}</p>` : '';
+            return `
+              <article class="panel card">
+                ${status}
+                <h3><a href="${project.homepage_path}">${project.name}</a></h3>
+                <p>${project.summary}</p>
+                ${tags}
+                ${note}
+              </article>
+            `;
+          }).join('');
+        } catch (error) {
+          container.innerHTML = '<article class="panel card placeholder-card"><p class="label">Catalog unavailable</p><p>Run the catalog rebuild script and confirm projects/projects.json exists.</p></article>';
+        }
+      }
+
+      loadProjects();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,10 @@
+{
+  "name": "govermon.github.io",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Public user site and project microsite host for govermon.",
+  "scripts": {
+    "build:catalog": "node scripts/rebuild-project-catalog.mjs",
+    "build": "node scripts/rebuild-project-catalog.mjs"
+  }
+}

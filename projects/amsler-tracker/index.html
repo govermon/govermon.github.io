@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Amsler Tracker</title>
+    <meta name="description" content="Public project microsite and live deployment pointer for Amsler Tracker.">
+    <link rel="stylesheet" href="site.css">
+  </head>
+  <body>
+    <main class="shell">
+      <section class="hero">
+        <p class="eyebrow">govermon / projects / amsler-tracker</p>
+        <h1>A public project page for a privately managed app.</h1>
+        <p class="lede">
+          This page is the public microsite for the current Amsler Tracker deployment.
+          The source, deployment workflow, and issue tracking can stay private while this
+          published path remains stable on the govermon.github.io site.
+        </p>
+        <div class="actions">
+          <a class="button button-primary" href="live-app.html">Open current deployment</a>
+          <a class="button button-secondary" href="/">More Projects</a>
+        </div>
+      </section>
+
+      <section class="panel status-panel">
+        <div>
+          <p class="label">Deployment status</p>
+          <p class="value" id="deployment-state">Loading</p>
+        </div>
+        <div>
+          <p class="label">Live URL</p>
+          <p class="value value-link"><a id="deployment-url" href="live-app.html">Open current deployment</a></p>
+        </div>
+        <div>
+          <p class="label">Last recorded</p>
+          <p class="value" id="deployment-updated">Pending</p>
+        </div>
+      </section>
+
+      <section class="grid">
+        <article class="panel">
+          <p class="label">What this page is</p>
+          <p>
+            A static project page published from the public govermon.github.io repository. It can
+            point at the current VM IP without asking the public project URL to change every time
+            the infrastructure changes.
+          </p>
+        </article>
+        <article class="panel">
+          <p class="label">Current hosting model</p>
+          <p>
+            The app is served through Caddy on a single VM, exposed over a reserved static IP,
+            and tracked by a small sanitized status file exported from the private source repo.
+          </p>
+        </article>
+        <article class="panel">
+          <p class="label">What is missing without DNS</p>
+          <p>
+            No memorable hostname, no automatic public TLS certificate for the app URL, and less
+            user-friendly sharing. The project page reduces link churn, but it does not replace DNS.
+          </p>
+        </article>
+        <article class="panel">
+          <p class="label">Publishing model</p>
+          <p>
+            The private source repo exports this page, its project metadata, and the deployment
+            status payload into the public govermon.github.io repository through an automated
+            pull-request workflow.
+          </p>
+        </article>
+      </section>
+    </main>
+
+    <script>
+      async function loadStatus() {
+        try {
+          const response = await fetch('site-status.json', { cache: 'no-store' });
+          if (!response.ok) {
+            throw new Error('status fetch failed');
+          }
+
+          const status = await response.json();
+          const stateNode = document.getElementById('deployment-state');
+          const urlNode = document.getElementById('deployment-url');
+          const updatedNode = document.getElementById('deployment-updated');
+
+          stateNode.textContent = status.state || 'unknown';
+          updatedNode.textContent = status.updated_at || 'unknown';
+
+          if (status.live_url) {
+            urlNode.href = status.live_url;
+            urlNode.textContent = status.live_url;
+          } else {
+            urlNode.href = 'live-app.html';
+            urlNode.textContent = 'See project page';
+          }
+        } catch (error) {
+          document.getElementById('deployment-state').textContent = 'status unavailable';
+          document.getElementById('deployment-updated').textContent = 'status unavailable';
+        }
+      }
+
+      loadStatus();
+    </script>
+  </body>
+</html>
