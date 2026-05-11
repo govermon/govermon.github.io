@@ -1,7 +1,7 @@
 {
   "slug": "amsler-tracker",
   "name": "Amsler Tracker",
-  "summary": "Touchscreen-first Amsler grid capture and review with a public deployment pointer and a private source repository.",
+  "summary": "Public project page for Amsler grid capture and review application.",
   "order": 20,
   "status": "active",
   "visibility": "private-source",
