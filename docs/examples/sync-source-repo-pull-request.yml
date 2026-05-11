@@ -1,0 +1,67 @@
+name: Example Source Repo Pull Request
+
+'on':
+  push:
+    branches: [main]
+    paths:
+      - 'docs/index.html'
+      - 'docs/site.css'
+      - 'docs/site-status.json'
+      - 'docs/live-app.html'
+      - 'docs/project.json'
+      - 'scripts/export-project-site.sh'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  sync-project-site-pr:
+    if: vars.GOVERMON_SITE_SYNC_ENABLED == 'true' && vars.GOVERMON_SITE_REPO != ''
+    runs-on: ubuntu-latest
+    env:
+      PROJECT_SLUG: my-project
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Derive govermon site repository coordinates
+        id: govermon-site-repo
+        env:
+          GOVERMON_SITE_REPO: ${{ vars.GOVERMON_SITE_REPO }}
+        run: |
+          echo "owner=${GOVERMON_SITE_REPO%/*}" >> "$GITHUB_OUTPUT"
+          echo "name=${GOVERMON_SITE_REPO#*/}" >> "$GITHUB_OUTPUT"
+
+      - name: Create GitHub App token
+        id: govermon-site-app-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ vars.GOVERMON_SITE_PUSH_APP_ID }}
+          private-key: ${{ secrets.GOVERMON_SITE_PUSH_APP_PRIVATE_KEY }}
+          owner: ${{ steps.govermon-site-repo.outputs.owner }}
+          repositories: ${{ steps.govermon-site-repo.outputs.name }}
+
+      - name: Checkout govermon.github.io repository
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ vars.GOVERMON_SITE_REPO }}
+          token: ${{ steps.govermon-site-app-token.outputs.token }}
+          path: govermon-site
+
+      - name: Export project bundle
+        run: bash scripts/export-project-site.sh "govermon-site/projects/${PROJECT_SLUG}"
+
+      - name: Open pull request with project bundle changes
+        uses: peter-evans/create-pull-request@v6
+        with:
+          path: govermon-site
+          token: ${{ steps.govermon-site-app-token.outputs.token }}
+          commit-message: Sync ${{ env.PROJECT_SLUG }} project bundle
+          branch: sync/${{ env.PROJECT_SLUG }}-project-site
+          delete-branch: true
+          title: Sync ${{ env.PROJECT_SLUG }} project bundle
+          body: |
+            - sync the exported ${{ env.PROJECT_SLUG }} public bundle
+            - update only `projects/${{ env.PROJECT_SLUG }}/`
+            - source: ${{ github.repository }}@${{ github.sha }}

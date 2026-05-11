@@ -22,6 +22,8 @@ Repository shape
 - `scripts/rebuild-project-catalog.mjs` rebuilds the catalog from project bundle metadata
 - `docs/project-bundle-contract.md` defines what a private repo must export
 - `docs/build-workflow.md` documents validation, rebuild, and publish behavior
+- `docs/source-repo-sync.md` documents the supported source-repo publishing contracts
+- `docs/examples/` contains example export scripts and workflow definitions for source repos
 - `.github/workflows/pages.yml` validates the repo, rebuilds the catalog, and deploys Pages
 
 Quick start
@@ -44,19 +46,39 @@ Cross-repo sync model
 ---------------------
 Private repositories should not publish Pages directly.
 
-Instead they should:
-- generate a public-safe project bundle
-- push updates directly into this repository
-- update only their own `projects/<slug>/` subtree unless intentionally changing shared site assets
+Instead they should publish a public-safe bundle through one of two supported
+contracts:
 
-For the current Amsler Tracker design, the private repo performs that sync
-through its own GitHub Actions workflow using:
+- direct push: trusted publishers commit their own `projects/<slug>/` subtree straight to `main`
+- pull request: review-gated publishers push a branch and open a pull request against `main`
+
+In both cases, the source repo should:
+
+- generate a public-safe project bundle
+- update only its own `projects/<slug>/` subtree unless intentionally changing shared site assets
+- leave `projects/projects.json` to this repo's build workflow
+
+The current live publisher app is a single GitHub App named
+`govermon-pages-publisher`.
+
+For the current Amsler Tracker design, the private repo uses that app for the
+direct-push contract through its own GitHub Actions workflow with:
 - repository variable `GOVERMON_SITE_SYNC_ENABLED=true`
 - repository variable `GOVERMON_SITE_REPO=govermon/govermon.github.io`
-- repository secret `GOVERMON_SITE_REPO_TOKEN`
+- repository variable `GOVERMON_SITE_PUSH_APP_ID=367364`
+- repository secret `GOVERMON_SITE_PUSH_APP_PRIVATE_KEY`
 
-The token should be a fine-grained personal access token or GitHub App token
-with permission to push commits to `main` in this repository.
+Preferred auth for that direct-push contract is a dedicated GitHub App
+installation limited to this repository. A PAT fallback may exist during
+migration, but should be treated as temporary and revoked after the app-based
+flow is confirmed working.
+
+For both supported source-repo contracts, see:
+
+- `docs/source-repo-sync.md`
+- `docs/examples/export-project-site.sh`
+- `docs/examples/sync-source-repo-direct-push.yml`
+- `docs/examples/sync-source-repo-pull-request.yml`
 
 What belongs here
 -----------------

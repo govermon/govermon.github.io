@@ -52,20 +52,53 @@ Commit the updated `projects/projects.json` when project metadata changes.
 
 Cross-repo sync flow
 --------------------
-A private repo such as `amsler-tracker` should:
-- export its public-safe bundle
-- push updates directly into `govermon/govermon.github.io`
-- touch only `projects/<slug>/` unless it intentionally updates shared docs or shared site assets
+A private repo such as `amsler-tracker` should export a public-safe bundle and
+then publish only its own `projects/<slug>/` subtree using one of these
+contracts:
 
-Recommended token model for the private repo workflow:
-- use a fine-grained personal access token or GitHub App token
-- scope it only to the `govermon/govermon.github.io` repository
-- grant contents write and metadata read access
+- direct push to `main`
+- branch push plus pull request into `main`
 
-Required configuration in the private repo:
+Current authentication model:
+
+- the live deployment currently uses one GitHub App named `govermon-pages-publisher`
+- that app is installed on `govermon/govermon.github.io` and on the source repo that stores its private key
+- the current `amsler-tracker` direct-push workflow uses `GOVERMON_SITE_PUSH_APP_ID=367364`
+- the app private key is stored in `GOVERMON_SITE_PUSH_APP_PRIVATE_KEY`
+
+If you later decide to split trust boundaries more strictly, you can move to one
+GitHub App per contract class without changing the public bundle contract.
+
+Contract guidance:
+
+- direct push is appropriate for trusted publishers where direct writes to `main` are acceptable
+- pull request mode is appropriate when every public bundle update should be reviewable before merge
+- both modes must no-op when the exported subtree is unchanged
+- neither mode should edit `projects/projects.json` directly
+
+Repository permissions for the current single-app setup:
+
+- `Contents: Read and write` is required
+- `Pull requests: Read and write` is needed only if the app will also be used for the PR contract
+
+Source-repo configuration for the current direct-push workflow:
+
 - variable `GOVERMON_SITE_SYNC_ENABLED=true`
 - variable `GOVERMON_SITE_REPO=govermon/govermon.github.io`
-- secret `GOVERMON_SITE_REPO_TOKEN`
+- variable `GOVERMON_SITE_PUSH_APP_ID=367364`
+- secret `GOVERMON_SITE_PUSH_APP_PRIVATE_KEY`
+
+Temporary migration fallback:
+
+- repo secret `GOVERMON_SITE_REPO_TOKEN` may exist briefly while moving away from a broader token
+- once the app-backed workflow is proven, delete that secret and revoke the broader credential
+
+Reference material for contributors and coding agents:
+
+- `docs/source-repo-sync.md`
+- `docs/examples/export-project-site.sh`
+- `docs/examples/sync-source-repo-direct-push.yml`
+- `docs/examples/sync-source-repo-pull-request.yml`
 
 Secrets in this public repo
 ---------------------------

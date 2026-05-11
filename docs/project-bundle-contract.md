@@ -10,6 +10,17 @@ Each published project microsite lives under:
 Private source repositories should export public-safe files into that folder and
 push only that subtree into this repository.
 
+Supported publication contracts
+-------------------------------
+The public repo supports two ways for a source repository to publish that
+subtree:
+
+- direct push into `main`
+- branch push plus pull request into `main`
+
+The publication contract does not change bundle ownership rules. In both modes,
+the source repository owns only its own `projects/<slug>/` subtree.
+
 Required files
 --------------
 Each project bundle must contain these files:
@@ -84,3 +95,6 @@ This public repo is responsible for:
 - validating bundle metadata
 - rebuilding the global project catalog
 - publishing the final static site
+
+For source-repo workflow examples, see `docs/source-repo-sync.md` and the
+example files under `docs/examples/`.
