@@ -19,7 +19,7 @@ Repository shape
 - `site.css` styles the top-level homepage
 - `projects/` contains one subdirectory per published project microsite
 - `projects/projects.json` is the generated project catalog used by the homepage
-- `projects/<slug>/start.html` is a generated project entry page that links to the live target
+- `projects/<slug>/start.html` is a generated secondary splash page that links to the live target
 - `scripts/rebuild-project-catalog.mjs` rebuilds the catalog from project bundle metadata
 - `docs/project-bundle-contract.md` defines what a private repo must export
 - `docs/build-workflow.md` documents validation, rebuild, and publish behavior
@@ -41,7 +41,7 @@ Run:
 
     node scripts/rebuild-project-catalog.mjs
 
-That regenerates `projects/projects.json` from `projects/*/project.json` and refreshes each generated `projects/<slug>/start.html` entry page.
+That regenerates `projects/projects.json` from `projects/*/project.json` and refreshes each generated `projects/<slug>/start.html` splash page.
 
 Cross-repo sync model
 ---------------------

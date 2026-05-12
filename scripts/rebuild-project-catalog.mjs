@@ -75,8 +75,6 @@ async function resolveLiveTargetUrl(project) {
 function renderStartPage(project, liveTargetUrl) {
   const projectName = escapeHtml(project.name);
   const liveUrl = escapeHtml(liveTargetUrl);
-  const projectPath = escapeHtml(project.homepage_path || `/projects/${project.slug}/`);
-  const timestamp = new Date().toISOString();
 
   return `<!doctype html>
 <html lang="en">
@@ -113,24 +111,13 @@ function renderStartPage(project, liveTargetUrl) {
       }
 
       main {
-        width: min(34rem, 100%);
-        padding: 2.25rem;
+        width: min(28rem, 100%);
+        padding: 2.75rem 2rem;
         border: 1px solid var(--line);
         border-radius: 1.5rem;
         background: var(--paper);
         box-shadow: 0 20px 60px rgba(19, 36, 43, 0.16);
-      }
-
-      p {
-        line-height: 1.6;
-      }
-
-      .eyebrow {
-        margin: 0 0 0.75rem;
-        font-size: 0.8rem;
-        font-weight: 700;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
+        text-align: center;
       }
 
       h1 {
@@ -139,15 +126,10 @@ function renderStartPage(project, liveTargetUrl) {
         line-height: 1.05;
       }
 
-      .lede {
-        margin: 1rem 0 0;
-      }
-
       .actions {
         display: flex;
-        flex-wrap: wrap;
-        gap: 0.75rem;
-        margin-top: 1.5rem;
+        justify-content: center;
+        margin-top: 1.75rem;
       }
 
       .button {
@@ -167,29 +149,14 @@ function renderStartPage(project, liveTargetUrl) {
       .button:focus-visible {
         background: var(--accent-strong);
       }
-
-      .link {
-        color: var(--accent);
-      }
-
-      .meta {
-        margin-top: 1.5rem;
-        color: rgba(19, 36, 43, 0.78);
-        font-size: 0.95rem;
-      }
     </style>
   </head>
   <body>
     <main>
-      <p class="eyebrow">govermon / projects / ${escapeHtml(project.slug)}</p>
       <h1>${projectName}</h1>
-      <p class="lede">This entry page is generated during the catalog rebuild and links directly to the current public microsite target.</p>
       <div class="actions">
-        <a class="button" href="${liveUrl}">Enter project</a>
+        <a class="button" href="${liveUrl}">Enter</a>
       </div>
-      <p class="meta">Live target: <a class="link" href="${liveUrl}">${liveUrl}</a></p>
-      <p class="meta">Project page: <a class="link" href="${projectPath}">${projectPath}</a></p>
-      <p class="meta">Generated at ${timestamp}.</p>
     </main>
   </body>
 </html>

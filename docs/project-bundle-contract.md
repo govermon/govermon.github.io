@@ -36,7 +36,9 @@ The public-site rebuild step also generates:
 - `start.html`
 
 Source repositories should not hand-maintain `start.html`. It is derived in
-this repo from the project metadata and the `live-app.html` target.
+this repo from the project metadata and the `live-app.html` target. The main
+project page remains `index.html`; `start.html` is only a secondary shareable
+splash page.
 
 Optional files
 --------------
@@ -61,7 +63,7 @@ Recommended fields:
 - `status`: such as `active`, `prototype`, or `archived`
 - `visibility`: such as `public`, `private-source`, or `mixed`
 - `live_page_path`: path to the redirect or live link page
-- `entry_page_path`: generated path to the public start page
+- `entry_page_path`: generated path to the secondary public start page
 - `status_path`: path to the status payload
 - `tags`: array of short tags
 - `notes`: array of short explanatory notes

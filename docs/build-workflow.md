@@ -7,7 +7,7 @@ This repository is a static GitHub Pages site.
 
 The build process does two generated steps before deployment:
 - rebuild `projects/projects.json` from `projects/*/project.json`
-- regenerate `projects/<slug>/start.html` entry pages from each project's live redirect page
+- regenerate `projects/<slug>/start.html` secondary splash pages from each project's live redirect page
 
 That generated catalog powers the top-level homepage.
 
