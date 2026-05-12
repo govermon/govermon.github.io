@@ -5,8 +5,9 @@ Overview
 --------
 This repository is a static GitHub Pages site.
 
-The build process does one important generated step before deployment:
+The build process does two generated steps before deployment:
 - rebuild `projects/projects.json` from `projects/*/project.json`
+- regenerate `projects/<slug>/start.html` entry pages from each project's live redirect page
 
 That generated catalog powers the top-level homepage.
 
@@ -48,7 +49,7 @@ From the repo root run:
 
     node scripts/rebuild-project-catalog.mjs
 
-Commit the updated `projects/projects.json` when project metadata changes.
+Commit the updated `projects/projects.json` and any regenerated `projects/<slug>/start.html` files when project metadata or live targets change.
 
 Cross-repo sync flow
 --------------------

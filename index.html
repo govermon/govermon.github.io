@@ -74,6 +74,7 @@
           }
 
           container.innerHTML = projects.map((project) => {
+            const projectLink = project.entry_page_path || project.homepage_path;
             const tags = Array.isArray(project.tags) && project.tags.length > 0
               ? `<p class="tags">${project.tags.join(' · ')}</p>`
               : '';
@@ -84,7 +85,7 @@
             return `
               <article class="panel card">
                 ${status}
-                <h3><a href="${project.homepage_path}">${project.name}</a></h3>
+                <h3><a href="${projectLink}">${project.name}</a></h3>
                 <p>${project.summary}</p>
                 ${tags}
                 ${note}

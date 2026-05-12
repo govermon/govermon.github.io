@@ -30,6 +30,14 @@ Each project bundle must contain these files:
 - `site-status.json`
 - `live-app.html`
 
+Generated files
+---------------
+The public-site rebuild step also generates:
+- `start.html`
+
+Source repositories should not hand-maintain `start.html`. It is derived in
+this repo from the project metadata and the `live-app.html` target.
+
 Optional files
 --------------
 A project bundle may also include:
@@ -53,6 +61,7 @@ Recommended fields:
 - `status`: such as `active`, `prototype`, or `archived`
 - `visibility`: such as `public`, `private-source`, or `mixed`
 - `live_page_path`: path to the redirect or live link page
+- `entry_page_path`: generated path to the public start page
 - `status_path`: path to the status payload
 - `tags`: array of short tags
 - `notes`: array of short explanatory notes

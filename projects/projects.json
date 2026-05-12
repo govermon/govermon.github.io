@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-05-11T14:11:57.484Z",
+  "generated_at": "2026-05-12T20:07:35.373Z",
   "project_count": 1,
   "projects": [
     {
       "slug": "amsler-tracker",
       "name": "Amsler Tracker",
-      "summary": "Touchscreen-first Amsler grid capture and review with a public deployment pointer and a private source repository.",
+      "summary": "Public project page for Amsler grid capture and review application.",
       "order": 20,
       "status": "active",
       "visibility": "private-source",
@@ -21,7 +21,8 @@
       "notes": [
         "The build, issue tracking, and deployment automation live in a private repository.",
         "This public project page is exported from that private source repository."
-      ]
+      ],
+      "entry_page_path": "/projects/amsler-tracker/start.html"
     }
   ]
 }
