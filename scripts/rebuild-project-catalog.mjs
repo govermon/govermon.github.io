@@ -73,7 +73,7 @@ async function resolveLiveTargetUrl(project) {
 }
 
 function renderStartPage(project, liveTargetUrl) {
-  const projectName = escapeHtml(project.name);
+  const projectLabel = escapeHtml(project.slug);
   const liveUrl = escapeHtml(liveTargetUrl);
 
   return `<!doctype html>
@@ -81,8 +81,8 @@ function renderStartPage(project, liveTargetUrl) {
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>${projectName} start</title>
-    <meta name="description" content="Entry page for ${projectName}.">
+    <title>${projectLabel} start</title>
+    <meta name="description" content="Entry page for ${projectLabel}.">
     <style>
       :root {
         color-scheme: light;
@@ -153,7 +153,7 @@ function renderStartPage(project, liveTargetUrl) {
   </head>
   <body>
     <main>
-      <h1>${projectName}</h1>
+      <h1>${projectLabel}</h1>
       <div class="actions">
         <a class="button" href="${liveUrl}">Enter</a>
       </div>
